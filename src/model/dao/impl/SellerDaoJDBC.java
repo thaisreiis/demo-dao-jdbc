@@ -53,16 +53,8 @@ public class SellerDaoJDBC implements SellerDao {
 			st.setInt(1, id); //setINT porque id é um numero inteiro, 1 pq é o primeiro ponto de ? e id pq eu quero achar deacordo com a id 
 			rs = st.executeQuery(); //rs é a variavel com o resultado dessa operacao
 			if (rs.next()) { //testar se o rs tem algum resultado ou se esta nulo, se for vdd:
-				Department dep = new Department();
-				dep.setId(rs.getInt("DepartmentId")); // getINT pq é numero inteiro e entre "" o nome da coluna do banco de dados q contem a info que queremos que é DepartmentId
-				dep.setName(rs.getString("DepName"));
-				Seller obj = new Seller(); //declarar a classe seller
-				obj.setId(rs.getInt("Id"));
-				obj.setName(rs.getString("Name"));
-				obj.setEmail(rs.getString("Email"));
-				obj.setBaseSalary(rs.getDouble("BaseSalary"));
-				obj.setBirthDate(rs.getDate("BirthDate"));
-				obj.setDepartment(dep);
+				Department dep = instantiateDepartment(rs);
+				Seller obj = instantiateSeller(rs, dep);
 				return obj;
 			} return null; //caso nao existe nenhum vendor com essa id
 		} catch (SQLException e) {
@@ -76,6 +68,24 @@ public class SellerDaoJDBC implements SellerDao {
 		
 		
 		
+	}
+
+	private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
+		Seller obj = new Seller(); //declarar a classe seller
+		obj.setId(rs.getInt("Id"));
+		obj.setName(rs.getString("Name"));
+		obj.setEmail(rs.getString("Email"));
+		obj.setBaseSalary(rs.getDouble("BaseSalary"));
+		obj.setBirthDate(rs.getDate("BirthDate"));
+		obj.setDepartment(dep);
+		return obj;
+	}
+
+	private Department instantiateDepartment(ResultSet rs) throws SQLException {
+		Department dep = new Department();
+		dep.setId(rs.getInt("DepartmentId")); 
+		dep.setName(rs.getString("DepName"));
+		return dep;
 	}
 
 	@Override
