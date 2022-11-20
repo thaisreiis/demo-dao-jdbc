@@ -1,33 +1,28 @@
 package model.entities;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class Department implements Serializable {
-	
-	/*Implements Serializable para nossos objetos poderem ser transformados em sequencia
-	de bits, isso é, para ser gravado em arquivo, seja trafegado em rede, etc */
-	
-	private static final long serialVersionUID = 1L; //resultado autocorreção do implements
-	
-	private Integer Id;
+
+	private static final long serialVersionUID = 1L;
+
+	private Integer id;
 	private String name;
 	
-	
-	public Department() {}
+	public Department() {
+	}
 
 	public Department(Integer id, String name) {
-		Id = id;
+		this.id = id;
 		this.name = name;
 	}
-	
-	
+
 	public Integer getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(Integer id) {
-		Id = id;
+		this.id = id;
 	}
 
 	public String getName() {
@@ -38,13 +33,12 @@ public class Department implements Serializable {
 		this.name = name;
 	}
 
-	
-	/*HashCode e equals para que meus objetos possam ser comparados pelo conteúdo e não 
-	pela referencia de ponteiros*/
-	
 	@Override
 	public int hashCode() {
-		return Objects.hash(Id);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
 	}
 
 	@Override
@@ -56,15 +50,16 @@ public class Department implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Department other = (Department) obj;
-		return Objects.equals(Id, other.Id);
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
-	
-	//ToString para ter uma facilidade de imprimir os valores do objeto na hora de testar
-	
 	@Override
 	public String toString() {
-		return "Department [Id=" + Id + ", name=" + name + "]";
+		return "Department [id=" + id + ", name=" + name + "]";
 	}
-	
 }
